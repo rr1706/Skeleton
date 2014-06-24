@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -34,8 +36,14 @@ namespace RatchetSkeleton
         private Point motorSpeeds = new Point(0, 0);
         private SpecialAction action = SpecialAction.NONE;
 
+        private Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram,
+ProtocolType.Udp);
+        private IPAddress serverAddr = IPAddress.Parse("10.17.6.2");
+        private IPEndPoint endPoint;
+
         public MainWindow()
         {
+            endPoint = new IPEndPoint(serverAddr, 80);
             InitializeComponent();
         }
 
@@ -143,6 +151,7 @@ namespace RatchetSkeleton
                 dc.DrawEllipse(this.rhandBrush, null, this.rhandPos, 10, 10);
                 canvas.ClipGeometry = new RectangleGeometry(new Rect(0, 0, 640, 480));
             }
+            UpdateRobot();
         }
 
 
@@ -220,6 +229,14 @@ namespace RatchetSkeleton
             {
                 action = SpecialAction.RETRACT;
             }
+        }
+
+        void UpdateRobot()
+        {
+            string text = String.Format("{0:0.00} {1:0.00}", motorSpeeds.X, motorSpeeds.Y);
+            byte[] send_buffer = Encoding.ASCII.GetBytes(text);
+
+            sock.SendTo(send_buffer, endPoint);
         }
     }
 }
