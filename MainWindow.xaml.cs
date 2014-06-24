@@ -38,12 +38,10 @@ namespace RatchetSkeleton
 
         private Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram,
 ProtocolType.Udp);
-        private IPAddress serverAddr = IPAddress.Parse("10.17.6.2");
-        private IPEndPoint endPoint;
+        private readonly IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("10.17.6.2"), 80);
 
         public MainWindow()
         {
-            endPoint = new IPEndPoint(serverAddr, 80);
             InitializeComponent();
         }
 
@@ -123,19 +121,14 @@ ProtocolType.Udp);
 
 
                 // shoot trigger
-                dc.DrawRectangle(Brushes.PaleVioletRed, whiteLine, new Rect(new Point(120, 400), new Point(180, 460)));
+                dc.DrawRectangle(Brushes.PaleVioletRed, whiteLine, new Rect(new Point(220, 120), new Point(280, 180)));
                 dc.DrawText(new FormattedText("Fire", CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight,
-                    new Typeface("Arial"), 24, Brushes.Yellow), new Point(130, 410));
+                    new Typeface("Arial"), 24, Brushes.Yellow), new Point(225, 130));
 
-                // intake extend trigger
-                dc.DrawRectangle(Brushes.PaleVioletRed, whiteLine, new Rect(new Point(20, 320), new Point(80, 380)));
-                dc.DrawText(new FormattedText("Extend", CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight,
-                    new Typeface("Arial"), 16, Brushes.Yellow), new Point(23, 330));
-
-                // intake retract trigger
+                // intake trigger
                 dc.DrawRectangle(Brushes.PaleVioletRed, whiteLine, new Rect(new Point(220, 320), new Point(280, 380)));
-                dc.DrawText(new FormattedText("Retract", CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight,
-                    new Typeface("Arial"), 16, Brushes.Yellow), new Point(223, 330));
+                dc.DrawText(new FormattedText("Intake", CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight,
+                    new Typeface("Arial"), 16, Brushes.Yellow), new Point(225, 330));
 
                 dc.DrawText(new FormattedText(action.ToString(), CultureInfo.GetCultureInfo("en-us"), FlowDirection.LeftToRight,
                     new Typeface("Arial"), 24, Brushes.Yellow), new Point(20, 80));
@@ -217,17 +210,13 @@ ProtocolType.Udp);
         void CalcActions()
         {
             action = SpecialAction.NONE;
-            if (lhandPos.X > 120 && lhandPos.X < 180 && lhandPos.Y > 400 && lhandPos.Y < 460)
+            if (lhandPos.X > 220 && lhandPos.X < 280 && lhandPos.Y > 120 && lhandPos.Y < 180)
             {
                 action = SpecialAction.FIRE;
             }
-            else if (lhandPos.X > 20 && lhandPos.X < 80 && lhandPos.Y > 320 && lhandPos.Y < 380)
-            {
-                action = SpecialAction.EXTEND;
-            }
             else if (lhandPos.X > 220 && lhandPos.X < 280 && lhandPos.Y > 320 && lhandPos.Y < 380)
             {
-                action = SpecialAction.RETRACT;
+                action = SpecialAction.INTAKE;
             }
         }
 

@@ -9,7 +9,6 @@ namespace RatchetSkeleton
     {
         NONE,
         FIRE,
-        EXTEND,
-        RETRACT
+        INTAKE
     }
 }
