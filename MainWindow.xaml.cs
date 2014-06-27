@@ -28,7 +28,7 @@ namespace RatchetSkeleton
         private DrawingGroup canvas;
         private DrawingImage output;
         private readonly Brush lhandBrush = Brushes.Red;
-        private readonly Brush rhandBrush = Brushes.Blue;
+        private readonly Brush rhandBrush = Brushes.Yellow;
         private readonly Pen whiteLine = new Pen(Brushes.White, 5);
         private readonly bool ads = true;
         private Point lhandPos = new Point(0, 0);
@@ -36,9 +36,8 @@ namespace RatchetSkeleton
         private Point motorSpeeds = new Point(0, 0);
         private SpecialAction action = SpecialAction.NONE;
 
-        private Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram,
-ProtocolType.Udp);
-        private readonly IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("10.17.6.2"), 80);
+        private Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        private readonly IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 80);
 
         public MainWindow()
         {
@@ -222,7 +221,7 @@ ProtocolType.Udp);
 
         void UpdateRobot()
         {
-            string text = String.Format("{0:0.00} {1:0.00}", motorSpeeds.X, motorSpeeds.Y);
+            string text = String.Format("{0:0.00} {1:0.00} {2}", motorSpeeds.X, motorSpeeds.Y, (int) action);
             byte[] send_buffer = Encoding.ASCII.GetBytes(text);
 
             sock.SendTo(send_buffer, endPoint);
