@@ -80,6 +80,7 @@ namespace RatchetSkeleton
         void SensorError()
         {
             Console.Error.WriteLine("Could not find a kinect sensor");
+            MessageBox.Show("Could not find a kinect sensor", "RatchetSkeleton");
             Close();
         }
 
